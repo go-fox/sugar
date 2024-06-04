@@ -108,6 +108,16 @@ func (v *Value[T]) Bool() (bool, error) {
 	return sconv.ToBool(v.Value.Load())
 }
 
+// Bytes get value and convert to []byte value
+//
+//	@receiver v
+//	@return []byte
+//	@return error
+//	@player
+func (v *Value[T]) Bytes() ([]byte, error) {
+	return sconv.ToBytes(v.Value.Load())
+}
+
 // String get value and convert to string value
 //
 //	@receiver v
