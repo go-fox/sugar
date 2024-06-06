@@ -5,7 +5,7 @@ import "sync"
 // Pool is an object pooling
 type Pool[T any] struct {
 	pool  *sync.Pool
-	reset func(T) T
+	reset func(T)
 }
 
 // New news an object pool
@@ -14,7 +14,7 @@ type Pool[T any] struct {
 //	@param reset ...func(T) T
 //	@return *Pool[T]
 //	@player
-func New[T any](factory func() T, reset ...func(T) T) *Pool[T] {
+func New[T any](factory func() T, reset ...func(T)) *Pool[T] {
 	p := &sync.Pool{}
 	if factory == nil {
 		p.New = func() any {
@@ -47,7 +47,7 @@ func (v *Pool[T]) Get() T {
 //	@param x T
 func (v *Pool[T]) Put(x T) {
 	if v.reset != nil {
-		x = v.reset(x)
+		v.reset(x)
 	}
 	v.pool.Put(x)
 }
