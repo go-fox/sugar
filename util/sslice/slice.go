@@ -107,3 +107,26 @@ func Chunk[T any](slice []T, size int) [][]T {
 
 	return result
 }
+
+// Union 去重
+func Union[T comparable, Slice ~[]T](lists ...Slice) Slice {
+	var capLen int
+
+	for _, list := range lists {
+		capLen += len(list)
+	}
+
+	result := make(Slice, 0, capLen)
+	seen := make(map[T]struct{}, capLen)
+
+	for i := range lists {
+		for j := range lists[i] {
+			if _, ok := seen[lists[i][j]]; !ok {
+				seen[lists[i][j]] = struct{}{}
+				result = append(result, lists[i][j])
+			}
+		}
+	}
+
+	return result
+}
